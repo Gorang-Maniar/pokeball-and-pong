@@ -1,0 +1,341 @@
+<html>
+	<head>
+		<title>game</title>
+		<style>
+		body
+		{
+			background-image: url('pika-back.jpg');
+			background-size: 100% 100%;
+		}
+		#canvas1
+		{
+			border: 5px solid green;
+			background-image: url('sky.jpeg');
+			background-size: 100% 100%;
+
+		}
+		</style>
+
+	</head>
+	</head>	
+	<body>
+	<canvas id="canvas1" width="500" height="650">
+		</canvas>
+	<div  style="float:right;margin-right:100px;width:40%;height:70%;color:white">
+		<h1 style="color:orange">PokeBalls</h1>
+		<hr>
+		<h1 style="color:red"> How to Play The Game...</h1>
+		<h3 style="color : black">
+			Pikachu is the cutest pokemon in the entire pokeworld. Since Ash befriended him he kept him as his friend he didn't want to be in a pokeball. This game is all based on that fact. You have to save the pikachu from getting catured by the pokeball. 
+		</h3>
+		<hr>
+		<h1 id="level" style="color:white;">LEVEL 1</h1>
+		<h1 id="highscore" style="color:white;">HighScore: 0</h1>
+		<h1 id="score" style="color:white;">Your Score: 0</h1>
+		<hr>
+		<p><h2 style="color:orange">Click on the pikachu and let the fun begin...</h2></p>
+	</div>	
+		<script>
+		if(!window.localStorage.HighScore)
+		window.localStorage.HighScore=0;
+		var canvas ;
+		var context;
+var flag=1,flag1=1;
+		var bgimg = new Image();
+		bgimg.src='grass.jpeg'; 
+		var img2 = new Image();
+		img2.src='crying_pikachu.png';
+		var img3 = new Image();
+		img3.src='high.jpg';
+		startImg=[];
+		pika=[];
+		for(i=1;i<18;++i)
+		{
+			var img = new Image();
+			img.src="opening"+i+".jpg";
+			startImg.push(img);
+		}
+			var img = new Image();
+			img.src="pikan1.png";
+			for(i=0;i<20;++i)
+			pika.push(img);
+			var img = new Image();
+			img.src="pikan2.png";
+			for(i=0;i<20;++i)
+			pika.push(img);
+			var img = new Image();
+			img.src="pikan3.png";
+			for(i=0;i<20;++i)
+			pika.push(img);
+			var img = new Image();
+			img.src="pikan4.png";
+			for(i=0;i<20;++i)
+			pika.push(img);
+		pikacount=0;
+
+		 window.onload = function() {
+		 	document.getElementById('highscore').innerHTML="HighScore: " + window.localStorage.HighScore;
+		 	canvas =document.getElementById('canvas1');
+		 	context = canvas.getContext('2d');
+		 	startScreen();
+		 }
+
+		window.requestAnimFrame = (function(){
+	return  window.requestAnimationFrame       || 
+		window.webkitRequestAnimationFrame || 
+		window.mozRequestAnimationFrame    || 
+		window.oRequestAnimationFrame      || 
+		window.msRequestAnimationFrame     ||  
+		function( callback ){
+			return window.setTimeout(callback, 1000 / 60);
+		};
+})();
+
+window.cancelRequestAnimFrame = ( function() {
+	return window.cancelAnimationFrame          ||
+		window.webkitCancelRequestAnimationFrame    ||
+		window.mozCancelRequestAnimationFrame       ||
+		window.oCancelRequestAnimationFrame     ||
+		window.msCancelRequestAnimationFrame        ||
+		clearTimeout
+} )();
+		var targetX = 0,
+    			targetY = 0;
+    						
+				function init()
+				{
+		//			
+						
+				//		context.fillStyle="blue";
+
+				
+					var container = {x:0,y:0,width:500,height:650};
+					var circles = [
+					{x:25,y:25,r:18,vx:0,vy:0},
+					{x:50,y:100,r:18,vx:5,vy:-5},
+					{x:325,y:210,r:18,vx:-5,vy:5},
+					{x:130,y:415,r:18,vx:-5,vy:-5},
+					{x:380,y:115,r:18,vx:5,vy:5}
+					];
+					//circles.push({x:80,y:520,r:25,vx:5,vy:5});
+					function dist(x1,y1,x2,y2)
+					{
+						return Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1))
+					}
+					var flag2=1;
+					var Finished=0;
+					var counter=0;
+					var balls=1;
+					var score=0;
+					img1= new Image();
+					img1.src= 'p1.gif'
+			
+					img = new Image();
+					img.src = 'pokeball.gif';					
+					//function draw
+					function draw()
+					{
+						canvas.style.cursor="none";
+						if(Finished==0)
+						{
+						if(targetX<container.width-18)
+							circles[0].x=targetX;
+						else
+							circles[0].x=container.width-18
+						if(targetY<container.height-18)
+							circles[0].y=targetY;
+						else
+							circles[0].y=container.height-18
+						counter++;
+						score++;
+						document.getElementById("score").innerHTML="Your Score: "+score;
+					}
+/*
+						var grd=context.createLinearGradient(0,0,200,0);
+						grd.addColorStop(0,"green");
+						grd.addColorStop(1,"green");
+						context.fillStyle=grd;*/
+						context.drawImage(bgimg,0,0,500,650);
+						//context.fillRect(container.x,container.y,container.width,container.height);
+
+						
+
+						for(var i=0;i<circles.length;i++)
+						{
+							//context.fillStyle="red"
+												
+							//context.beginPath();
+							if(i!=0)
+							{
+								//context.arc(circles[i].x,circles[i].y,circles[i].r,0,2*Math.PI);
+								context.drawImage(img, circles[i].x-18, circles[i].y-18,32,32);
+							}
+					/*		else
+							{
+								context.arc(targetX,targetY,circles[i].r,0,2*Math.PI);
+							}
+				*/			else
+							{
+							if(targetX<canvas.width-18)
+        {
+        		if(targetY<canvas.height-18)
+       		 {
+       			 //context.arc(targetX,targetY,18,0,Math.PI*2);
+       			 context.drawImage(pika[pikacount], targetX-20, targetY-20,40,40);
+       			 pikacount++;
+       			 if(pikacount==80)
+       			 	pikacount=0;
+       		 }
+      	  else
+      	 	 {
+     			   //context.arc(targetX,canvas.height-18,18,0,Math.PI*2);
+     			   context.drawImage(pika[pikacount], targetX-20, canvas.height-40,40,40);
+     			   pikacount++;
+       			 if(pikacount==80)
+       			 	pikacount=0;
+      		  }
+        }
+        else
+        {
+       		 if(targetY<canvas.height-20)
+       		 {
+        			//context.arc(canvas.width-18,targetY,18,0,Math.PI*2);
+        			context.drawImage(pika[pikacount],canvas.width-40,targetY-20 ,40,40);
+       		 		pikacount++;
+       			 if(pikacount==80)
+       			 	pikacount=0;
+       		 }
+        		else
+        		{
+					//context.arc(canvas.width-18,canvas.height-18,18,0,Math.PI*2)
+					context.drawImage(pika[pikacount], canvas.width-40, canvas.height-40,40,40);
+        			pikacount++;
+       			 if(pikacount==80)
+       			 	pikacount=0;
+        		}
+        }}		
+							context.fill();
+							if(circles[i].x-circles[i].r+circles[i].vx<container.x||circles[i].x+circles[i].r+circles[i].vx>container.x+container.width)
+							{
+							circles[i].vx=-1*circles[i].vx;
+							}
+							if(circles[i].y-circles[i].r+circles[i].vy<container.y||circles[i].y+circles[i].r+circles[i].vy>container.y+container.height)
+							{
+							circles[i].vy=-1*circles[i].vy;
+							}
+							for(j=0;i!=j;++j)
+							{
+								if(dist(circles[i].x+circles[i].vx,circles[i].y+circles[i].vy,circles[j].x+circles[j].vx,circles[j].y+circles[j].vy)<=circles[i].r+circles[j].r)
+								{
+								if(i==0 || j==0)
+									{
+									document.getElementById("level").innerHTML="Game Over";
+									circles={};
+									GameOver();
+									Finished=1;
+									}
+									var temp=circles[i].vx;
+									circles[i].vx=circles[j].vx;
+									circles[j].vx=temp;
+									temp=circles[i].vy;
+									circles[i].vy=circles[j].vy;
+									circles[j].vy=temp;
+									//if(dist(circles[i].x,circles[i].y,circles[j].x,circles[j].y)<=circles[i].r+circles[j].r+8)
+								
+							}
+							}
+							circles[i].x+=circles[i].vx;
+							circles[i].y+=circles[i].vy;
+						
+						}
+						if(counter>=600)
+						{ 
+							BallAdded=1;
+							var xr=50+Math.random()*400,yr=50+Math.random()*550;
+							for(k=0;k<circles.length;++k)
+							{
+								if( Math.pow(circles[k].x-xr,2) + Math.pow(circles[k].y-yr,2) < 18*18)
+								{
+									BallAdded=0;
+									break;
+								}							
+							}
+							if(BallAdded==1)
+							{
+								counter=0;
+								balls++;
+								document.getElementById("level").innerHTML="LEVEL "+balls
+								circles.push({x:xr,y:yr,r:18,vx:(5+balls),vy:-(5+balls)});
+						//		circles[circles.length-1].vx*=Math.pow(-1,xr);
+						//		circles[circles.length-1].vy*=Math.pow(-1,yr);
+							}
+						}
+						requestAnimationFrame(draw);	
+						
+					}
+				requestAnimationFrame(draw);
+				function GameOver()
+				{
+					flag2=1;
+					cancelAnimationFrame(draw);
+					context.clearRect(0,0,500,650)
+					if(score<window.localStorage.HighScore)
+						context.drawImage(img2, 0, 0,canvas.width,canvas.height);
+					else
+						context.drawImage(img3, -30, 0,canvas.width+30,canvas.height);
+					canvas.style.cursor="pointer";
+					canvas.onclick=function(){if(flag2==1){flag2=0;Restart();}};	
+				}	
+				function Restart()
+				{
+					//flag2=1;
+					circles = [
+					{x:25,y:25,r:18,vx:0,vy:0},
+					{x:50,y:100,r:18,vx:5,vy:-5},
+					{x:325,y:210,r:18,vx:-5,vy:5},
+					{x:130,y:415,r:18,vx:-5,vy:-5},
+					{x:380,y:115,r:18,vx:5,vy:5}
+					];
+					Finished=0;
+					balls=1;
+					counter=0;
+					pikacounter=0;
+					if(score>window.localStorage.HighScore)
+						window.localStorage.HighScore=score;
+					document.getElementById('highscore').innerHTML="HighScore: "+window.localStorage.HighScore;
+					score=0;
+					document.getElementById("level").innerHTML="LEVEL 1"
+					requestAnimationFrame(draw);
+				}
+				}
+				window.addEventListener("mousemove", function(e){
+				    				targetX = e.pageX;
+    								targetY = e.pageY;
+				});
+								function startScreen()
+				{
+					
+					counter1=0;
+					showImage();
+					function showImage()
+					{
+						if(flag==1)
+						context.drawImage(startImg[counter1], 0, 0,500,650);
+						counter1++;
+						if(counter1==17)
+							counter1=0;
+						if(flag1==1)
+							canvas.onclick=function(){if(flag1==1)init();flag=0;console.log("1");flag1=0;}
+						if(flag==1)
+							setTimeout(showImage,100);
+					}
+					
+					
+						
+				}
+				
+			</script>
+					
+	</body>
+
+</html>
